@@ -34,25 +34,33 @@ public class TemplateConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateConfig.class);
 
+    /**
+     * 设置实体模板路径
+     */
     private String entity;
 
     private List<ExtraGenerator> entityExtra = Collections.emptyList();
-
-    private boolean disableEntity;
 
     /**
      * 设置实体模板路径(kotlin模板)
      */
     private String entityKt;
 
+    /**
+     * 设置Service模板路径
+     */
     private String service;
 
     private List<ExtraGenerator> serviceExtra = Collections.emptyList();
 
+    /**
+     * 设置ServiceImpl模板路径
+     */
     private String serviceImpl;
-
     private List<ExtraGenerator> serviceImplExtra = Collections.emptyList();
-
+    /**
+     * 设置Mapper模板路径
+     */
     private String mapper;
 
     private List<ExtraGenerator> mapperExtra = Collections.emptyList();
@@ -60,8 +68,14 @@ public class TemplateConfig {
     private String xml;
 
     private List<ExtraGenerator> xmlExtra = Collections.emptyList();
-
+    /**
+     * 设置控制器模板路径
+     */
     private String controller;
+    /**
+     * 是否禁用实体模板（默认 false）
+     */
+    private boolean disableEntity;
 
     private List<ExtraGenerator> controllerExtra = Collections.emptyList();
 
@@ -69,13 +83,13 @@ public class TemplateConfig {
      * 不对外爆露
      */
     private TemplateConfig() {
-        this.controller = ConstVal.TEMPLATE_CONTROLLER;
         this.entity = ConstVal.TEMPLATE_ENTITY_JAVA;
         this.entityKt = ConstVal.TEMPLATE_ENTITY_KT;
+        this.controller = ConstVal.TEMPLATE_CONTROLLER;
+        this.mapper = ConstVal.TEMPLATE_MAPPER;
         this.xml = ConstVal.TEMPLATE_XML;
         this.service = ConstVal.TEMPLATE_SERVICE;
         this.serviceImpl = ConstVal.TEMPLATE_SERVICE_IMPL;
-        this.mapper = ConstVal.TEMPLATE_MAPPER;
     }
 
     /**
@@ -121,24 +135,26 @@ public class TemplateConfig {
         if (templateTypes != null && templateTypes.length > 0) {
             for (TemplateType templateType : templateTypes) {
                 switch (templateType) {
-                    case XML:
-                        this.xml = null;
-                        break;
                     case ENTITY:
                         this.entity = null;
                         this.entityKt = null;
                         //暂时没其他多的需求,使用一个单独的boolean变量进行支持一下.
                         this.disableEntity = true;
                         break;
+                    case CONTROLLER:
+                        this.controller = null;
+                        break;
                     case MAPPER:
                         this.mapper = null;
                         break;
+                    case XML:
+                        this.xml = null;
+                        break;
                     case SERVICE:
                         this.service = null;
-                        this.serviceImpl = null;
                         break;
-                    case CONTROLLER:
-                        this.controller = null;
+                    case SERVICEIMPL:
+                        this.serviceImpl = null;
                         break;
                     default:
                 }
