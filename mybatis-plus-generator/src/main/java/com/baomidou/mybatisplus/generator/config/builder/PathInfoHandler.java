@@ -32,24 +32,48 @@ import java.util.Map;
  * @since 3.5.0
  */
 class PathInfoHandler {
+
+    /**
+     * 输出文件Map
+     */
     private final Map<OutputFile, String> pathInfo = new HashMap<>();
+
+    /**
+     * 输出目录
+     */
     private final String outputDir;
+
+    /**
+     * 包配置信息
+     */
     private final PackageConfig packageConfig;
 
     PathInfoHandler(GlobalConfig globalConfig, TemplateConfig templateConfig, PackageConfig packageConfig) {
         this.outputDir = globalConfig.getOutputDir();
         this.packageConfig = packageConfig;
+        // 设置默认输出路径
+        this.setDefaultPathInfo(globalConfig, templateConfig);
+        // 覆盖自定义路径
         Map<OutputFile, String> pathInfo = packageConfig.getPathInfo();
         if (CollectionUtils.isNotEmpty(pathInfo)) {
             this.pathInfo.putAll(pathInfo);
         }
-        // 设置默认输出路径
+    }
+
+    /**
+     * 设置默认输出路径
+     *
+     * @param globalConfig   全局配置
+     * @param templateConfig 模板配置
+     */
+    private void setDefaultPathInfo(GlobalConfig globalConfig, TemplateConfig templateConfig) {
         putPathInfo(templateConfig.getEntity(globalConfig.isKotlin()), OutputFile.entity, ConstVal.ENTITY);
         putPathInfo(templateConfig.getMapper(), OutputFile.mapper, ConstVal.MAPPER);
-        putPathInfo(templateConfig.getXml(), OutputFile.mapperXml, ConstVal.MAPPER);
+        putPathInfo(templateConfig.getXml(), OutputFile.mapperXml, ConstVal.XML);
         putPathInfo(templateConfig.getService(), OutputFile.service, ConstVal.SERVICE);
         putPathInfo(templateConfig.getServiceImpl(), OutputFile.serviceImpl, ConstVal.SERVICE_IMPL);
         putPathInfo(templateConfig.getController(), OutputFile.controller, ConstVal.CONTROLLER);
+        putPathInfo(OutputFile.other, ConstVal.OTHER);
     }
 
     public Map<OutputFile, String> getPathInfo() {
@@ -58,8 +82,12 @@ class PathInfoHandler {
 
     private void putPathInfo(String template, OutputFile outputFile, String module) {
         if (StringUtils.isNotBlank(template)) {
-            pathInfo.putIfAbsent(outputFile, joinPath(outputDir, packageConfig.getPackageInfo(module)));
+            putPathInfo(outputFile, module);
         }
+    }
+
+    private void putPathInfo(OutputFile outputFile, String module) {
+        pathInfo.putIfAbsent(outputFile, joinPath(outputDir, packageConfig.getPackageInfo(module)));
     }
 
     /**

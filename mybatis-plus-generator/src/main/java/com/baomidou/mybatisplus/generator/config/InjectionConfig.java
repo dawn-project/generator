@@ -18,6 +18,7 @@ package com.baomidou.mybatisplus.generator.config;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -28,16 +29,40 @@ import java.util.function.BiConsumer;
  * @since 2016-12-07
  */
 public class InjectionConfig {
+
     /**
      * 输出文件之前消费者
      */
     private BiConsumer<TableInfo, Map<String, Object>> beforeOutputFileBiConsumer;
 
+    /**
+     * 自定义配置 Map 对象
+     */
+    private Map<String, Object> customMap = new HashMap<>();
+
+    /**
+     * 自定义模板文件，key为文件名称，value为模板路径
+     */
+    private Map<String, String> customFile = new HashMap<>();
+
     @NotNull
     public void beforeOutputFile(TableInfo tableInfo, Map<String, Object> objectMap) {
+        if (!customMap.isEmpty()) {
+            objectMap.putAll(customMap);
+        }
         if (null != beforeOutputFileBiConsumer) {
             beforeOutputFileBiConsumer.accept(tableInfo, objectMap);
         }
+    }
+
+    @NotNull
+    public Map<String, Object> getCustomMap() {
+        return customMap;
+    }
+
+    @NotNull
+    public Map<String, String> getCustomFile() {
+        return customFile;
     }
 
     /**
@@ -51,8 +76,36 @@ public class InjectionConfig {
             this.injectionConfig = new InjectionConfig();
         }
 
-        public Builder beforeOutputFile(BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
+        /**
+         * 输出文件之前消费者
+         *
+         * @param biConsumer 消费者
+         * @return this
+         */
+        public Builder beforeOutputFile(@NotNull BiConsumer<TableInfo, Map<String, Object>> biConsumer) {
             this.injectionConfig.beforeOutputFileBiConsumer = biConsumer;
+            return this;
+        }
+
+        /**
+         * 自定义配置 Map 对象
+         *
+         * @param customMap Map 对象
+         * @return this
+         */
+        public Builder customMap(@NotNull Map<String, Object> customMap) {
+            this.injectionConfig.customMap = customMap;
+            return this;
+        }
+
+        /**
+         * 自定义配置模板文件
+         *
+         * @param customFile key为文件名称，value为文件路径
+         * @return this
+         */
+        public Builder customFile(@NotNull Map<String, String> customFile) {
+            this.injectionConfig.customFile = customFile;
             return this;
         }
 

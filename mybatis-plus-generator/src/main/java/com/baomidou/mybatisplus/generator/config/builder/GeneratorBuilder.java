@@ -15,10 +15,7 @@
  */
 package com.baomidou.mybatisplus.generator.config.builder;
 
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
+import com.baomidou.mybatisplus.generator.config.*;
 
 /**
  * 生成器 Builder
@@ -27,7 +24,6 @@ import com.baomidou.mybatisplus.generator.config.TemplateConfig;
  * @since 3.5.0
  */
 public class GeneratorBuilder {
-
 
     /**
      * 全局配置
@@ -38,7 +34,6 @@ public class GeneratorBuilder {
         return new GlobalConfig.Builder().build();
     }
 
-
     /**
      * 全局配置 Builder
      *
@@ -47,7 +42,6 @@ public class GeneratorBuilder {
     public static GlobalConfig.Builder globalConfigBuilder() {
         return new GlobalConfig.Builder();
     }
-
 
     /**
      * 包相关的配置项
@@ -68,6 +62,15 @@ public class GeneratorBuilder {
     }
 
     /**
+     * 策略配置项
+     *
+     * @return StrategyConfig
+     */
+    public static StrategyConfig strategyConfig() {
+        return new StrategyConfig.Builder().build();
+    }
+
+    /**
      * 策略配置项 Builder
      *
      * @return StrategyConfig.Builder
@@ -77,12 +80,12 @@ public class GeneratorBuilder {
     }
 
     /**
-     * 策略配置项
+     * 模板路径配置项
      *
-     * @return StrategyConfig
+     * @return TemplateConfig
      */
-    public static StrategyConfig strategyConfig() {
-        return new StrategyConfig.Builder().build();
+    public static TemplateConfig templateConfig() {
+        return new TemplateConfig.Builder().build();
     }
 
     /**
@@ -95,12 +98,20 @@ public class GeneratorBuilder {
     }
 
     /**
-     * 模板路径配置项
+     * 注入配置项
      *
-     * @return TemplateConfig
+     * @return InjectionConfig
      */
-    public static TemplateConfig templateConfig() {
-        return new TemplateConfig.Builder().build();
+    public static InjectionConfig injectionConfig() {
+        return new InjectionConfig.Builder().build();
     }
 
+    /**
+     * 注入配置项 Builder
+     *
+     * @return InjectionConfig.Builder
+     */
+    public static InjectionConfig.Builder injectionConfigBuilder() {
+        return new InjectionConfig.Builder();
+    }
 }
